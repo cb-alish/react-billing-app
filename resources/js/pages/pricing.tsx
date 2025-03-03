@@ -6,13 +6,9 @@ import {Button} from "@/components/ui/button";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard',
-        href: '/dashboard',
-    },
-    {
         title: 'Pricing',
         href: '/pricing',
-    },
+    }
 ];
 export default function Pricing() {
     const {auth} = usePage<SharedData>().props;
