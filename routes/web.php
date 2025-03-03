@@ -18,5 +18,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('pricing');
     })->name('pricing');
 });
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('failed-payment', function () {
+        return Inertia::render('failedPayment');
+    })->name('failed-payment');
+});
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
+require __DIR__.'/checkout.php';

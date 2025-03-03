@@ -1,6 +1,8 @@
 import AppLayout from '@/layouts/app-layout';
 import {type BreadcrumbItem, SharedData} from '@/types';
-import {Head, usePage} from '@inertiajs/react';
+import {Head, usePage, Link} from '@inertiajs/react';
+import {LoaderCircle} from "lucide-react";
+import {Button} from "@/components/ui/button";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -13,7 +15,9 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 export default function Pricing() {
-    const { auth } = usePage<SharedData>().props;
+    const {auth} = usePage<SharedData>().props;
+    const subscription = auth.subscription;
+    console.log(auth);
     const currentPlan = () => {
         return (
             <div
@@ -22,6 +26,22 @@ export default function Pricing() {
             </div>
         )
     }
+    const checkoutButtonLink = (plan: string, disabled: boolean = false) => {
+        return (
+            <a
+                href={disabled ? "#" : `/checkout/${plan}`}
+                className={`mt-auto rounded-lg px-4 py-2 font-medium text-white ${
+                    disabled
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-blue-600 hover:bg-blue-700"
+                }`}
+                aria-disabled={disabled}
+            >
+                Upgrade Now
+            </a>
+        );
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Pricing"/>
@@ -37,7 +57,7 @@ export default function Pricing() {
                     {/* Free Plan */}
                     <div
                         className="border-sidebar-border/70 dark:border-sidebar-border relative flex flex-col rounded-xl border p-6">
-                        {currentPlan()}
+                        {!subscription || subscription.length === 0 ? currentPlan() : <></>}
                         <div className="mb-4">
                             <h2 className="text-xl font-bold">Free</h2>
                             <p className="text-gray-600 dark:text-gray-400">Essential features for beginners</p>
@@ -83,6 +103,7 @@ export default function Pricing() {
                     {/* Pro Plan */}
                     <div
                         className="border-sidebar-border/70 dark:border-sidebar-border relative flex flex-col rounded-xl border bg-gray-50 p-6 dark:bg-gray-800/50">
+                        { subscription?.[0]?.chargebee_price === "pro-plan-INR-Monthly" ? currentPlan() : <></> }
                         <div
                             className="absolute -top-3 right-6 rounded-full bg-blue-500 px-3 py-1 text-xs font-medium text-white">
                             Popular
@@ -131,15 +152,13 @@ export default function Pricing() {
                                 <span>Custom integrations</span>
                             </li>
                         </ul>
-                        <button
-                            className="mt-auto rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700">
-                            Upgrade Now
-                        </button>
+                        {checkoutButtonLink("pro-plan-INR-Monthly", subscription?.[0]?.chargebee_price === "pro-plan-INR-Monthly")}
                     </div>
 
                     {/* Premium Plan */}
                     <div
-                        className="border-sidebar-border/70 dark:border-sidebar-border flex flex-col rounded-xl border p-6">
+                         className="border-sidebar-border/70 dark:border-sidebar-border relative flex flex-col rounded-xl border bg-gray-50 p-6 dark:bg-gray-800/50">
+                        { subscription?.[0]?.chargebee_price === "premium-plan-INR-Monthly" ? currentPlan() : <></> }
                         <div className="mb-4">
                             <h2 className="text-xl font-bold">Premium</h2>
                             <p className="text-gray-600 dark:text-gray-400">Enterprise-grade solutions</p>
@@ -192,10 +211,7 @@ export default function Pricing() {
                                 <span>API access</span>
                             </li>
                         </ul>
-                        <button
-                            className="mt-auto rounded-lg border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
-                            Contact Sales
-                        </button>
+                        {checkoutButtonLink("premium-plan-INR-Monthly", subscription?.[0]?.chargebee_price === "premium-plan-INR-Monthly")}
                     </div>
                 </div>
 

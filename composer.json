@@ -11,6 +11,7 @@
     "require": {
         "php": "^8.2",
         "inertiajs/inertia-laravel": "^2.0",
+        "laravel/cashier-chargebee": "dev-dev",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "tightenco/ziggy": "^2.4"
@@ -72,6 +73,12 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": {
+        "cashier-chargebee": {
+            "type": "path",
+            "url": "/Users/alishsapkota/work/cashier-chargebee"
+        }
+    }
 }
