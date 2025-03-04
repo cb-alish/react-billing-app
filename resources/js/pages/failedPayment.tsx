@@ -12,7 +12,7 @@ export default function PaymentFailed() {
                 }`}
                 aria-disabled={disabled}
             >
-                Upgrade Now
+                Update Payment Method
             </a>
         );
     };
