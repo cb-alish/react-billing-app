@@ -15,7 +15,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('pricing', function () {
-        return Inertia::render('pricing');
+        return Inertia::render('pricing/pricing');
     })->name('pricing');
 });
 
@@ -24,6 +24,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('failedPayment');
     })->name('failed-payment');
 });
+
+Route::middleware([])->group(function () {
+    Route::get('something-went-wrong', function () {
+        return Inertia::render('errorPage', [
+            'flash' => session()->only(['error','success'])
+        ]);
+    })->name('something-went-wrong');
+});
+
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
 require __DIR__.'/checkout.php';
+require __DIR__.'/subscription.php';
+
