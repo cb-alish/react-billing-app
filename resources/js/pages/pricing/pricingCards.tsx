@@ -15,7 +15,7 @@ export default function PricingCards() {
         if(!subscription || subscription.length < 1 || subscription?.[0].chargebee_status === "cancelled"){
             return "none";
         }
-        return subscription?.[0].chargebee_status;
+        return subscription?.[0].chargebee_price;
     }
     const checkoutButtonLink = (plan: string) => {
         const currentPlan = plan === getCurrentSubscriptionPlan();

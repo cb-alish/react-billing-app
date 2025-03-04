@@ -14,7 +14,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Pricing() {
     const { auth } = usePage<SharedData>().props;
     const subscription = auth.subscription;
-    console.log(subscription);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Pricing"/>
