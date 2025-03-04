@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PlanCard from './PlanCard';
 import {usePage} from "@inertiajs/react";
 import {SharedData} from "@/types";
+import { Loader2 } from 'lucide-react';
 
 interface PricingCardsProps {
     subscription: any;
@@ -18,19 +19,35 @@ export default function PricingCards() {
         return subscription?.[0].chargebee_price;
     }
     const checkoutButtonLink = (plan: string) => {
+        const [isLoading, setIsLoading] = useState(false);
         const currentPlan = plan === getCurrentSubscriptionPlan();
+
+        const handleClick = (e: React.MouseEvent) => {
+            if (currentPlan || isLoading) {
+                e.preventDefault(); // Prevent navigation if disabled or already loading
+                return;
+            }
+            setIsLoading(true);
+        };
+
         return (
-            <a
-                href={currentPlan ? "#" : `/checkout/${plan}`}
-                className={`mt-auto rounded-lg px-4 py-2 font-medium text-white ${
+            !isLoading ? <a
+                href={ `/checkout/${plan}`}
+                className={`mt-auto rounded-lg px-4 py-2 font-medium text-white transition ${
                     currentPlan
                         ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-blue-600 hover:bg-blue-700"
+                        : isLoading
+                            ? "bg-blue-400 cursor-wait"
+                            : "bg-blue-600 hover:bg-blue-700"
                 }`}
-                aria-disabled={currentPlan}
+                aria-disabled={currentPlan || isLoading}
+                onClick={handleClick}
             >
                 Upgrade Now
-            </a>
+            </a> : <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
+            </>
         );
     };
 
@@ -54,13 +71,7 @@ export default function PricingCards() {
             "5 projects",
             "Basic analytics",
             "24-hour support",
-        ],
-        action: (
-            <button
-                className="mt-auto rounded-lg border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
-                Get Started
-            </button>
-        )
+        ]
     };
 
     // Pro Plan details

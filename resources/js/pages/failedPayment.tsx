@@ -1,18 +1,31 @@
 import {Head, Link} from '@inertiajs/react';
+import React, {useState} from "react";
+import {Loader2} from "lucide-react";
 
 export default function PaymentFailed() {
-    const updatePaymentMethodButtonLink = (plan: string, disabled: boolean = false) => {
+    const updatePaymentMethodButton = () => {
+        const [isLoading, setIsLoading] = useState(false);
+
+        const handleClick = (e: React.MouseEvent) => {
+            if (isLoading) {
+                e.preventDefault(); // Prevent navigation if disabled or already loading
+                return;
+            }
+            setIsLoading(true);
+        };
+
         return (
             <a
-                href={disabled ? "#" : `/update-payment-method`}
-                className={`w-full rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 sm:w-auto ${
-                    disabled
-                        ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-blue-600 hover:bg-blue-700"
+                href={`/update-payment-method`}
+                className={`w-full flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 sm:w-auto ${
+                    isLoading ? "bg-red-400 cursor-wait pointer-events-none opacity-50" : ""
                 }`}
-                aria-disabled={disabled}
+                aria-disabled={isLoading}
+                tabIndex={isLoading ? -1 : undefined}
+                onClick={isLoading ? (e) => e.preventDefault() : handleClick}
             >
                 Update Payment Method
+                {isLoading && <Loader2 className="animate-spin ml-2" />}
             </a>
         );
     };
@@ -85,7 +98,7 @@ export default function PaymentFailed() {
                         </div>
 
                         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-                            {updatePaymentMethodButtonLink()}
+                            {updatePaymentMethodButton()}
                             <Link
                                 href="/billing"
                                 className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 sm:w-auto">

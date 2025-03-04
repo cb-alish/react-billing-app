@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {Loader2} from "lucide-react";
 
 interface PlanCardProps {
     plan: {
@@ -14,6 +15,34 @@ interface PlanCardProps {
     additionalClasses?: string;
 }
 
+const cancleSubscriptionButton = () => {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleClick = (e: React.MouseEvent) => {
+        if (isLoading) {
+            e.preventDefault(); // Prevent navigation if disabled or already loading
+            return;
+        }
+        setIsLoading(true);
+    };
+
+    return (
+        !isLoading ? <a
+            href={ `/subscription/cancel-subscription`}
+            className={`rounded-lg px-4 py-2 text-center font-medium text-red-600 border border-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 ${ isLoading
+                        ? "bg-red-400 cursor-wait"
+                        : ""
+            }`}
+            aria-disabled={ isLoading}
+            onClick={handleClick}
+        >
+            cancle now
+        </a> : <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Processing...
+        </>
+    );
+};
 export default function PlanCard({
                                      plan,
                                      currentPlanRenderer,
@@ -59,14 +88,7 @@ export default function PlanCard({
             <div className="mt-auto flex flex-col gap-2">
                 {!plan.currentPlan ? plan.action : <> </>}
 
-                {plan.currentPlan && plan.name !== "Free" && (
-                    <a
-                        href="/subscription/cancel-subscription"
-                        className="rounded-lg px-4 py-2 text-center font-medium text-red-600 border border-red-600 hover:bg-red-50 dark:hover:bg-red-900/10"
-                    >
-                        Cancel Subscription
-                    </a>
-                )}
+                {plan.currentPlan && plan.name !== "Free" && cancleSubscriptionButton()}
             </div>
         </div>
     );
