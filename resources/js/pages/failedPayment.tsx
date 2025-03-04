@@ -1,6 +1,21 @@
 import {Head, Link} from '@inertiajs/react';
 
 export default function PaymentFailed() {
+    const updatePaymentMethodButtonLink = (plan: string, disabled: boolean = false) => {
+        return (
+            <a
+                href={disabled ? "#" : `/update-payment-method`}
+                className={`w-full rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 sm:w-auto ${
+                    disabled
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-blue-600 hover:bg-blue-700"
+                }`}
+                aria-disabled={disabled}
+            >
+                Upgrade Now
+            </a>
+        );
+    };
     return (
         <>
             <Head title="Payment Failed"/>
@@ -70,11 +85,7 @@ export default function PaymentFailed() {
                         </div>
 
                         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-                            <Link
-                                href="/update-payment-method"
-                                className="w-full rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 sm:w-auto">
-                                Update Payment Method
-                            </Link>
+                            {updatePaymentMethodButtonLink()}
                             <Link
                                 href="/billing"
                                 className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 sm:w-auto">

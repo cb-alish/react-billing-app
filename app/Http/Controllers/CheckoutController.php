@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Laravel\CashierChargebee\Session;
+
 
 class CheckoutController extends Controller
 {
@@ -15,5 +17,10 @@ class CheckoutController extends Controller
                 'cancel_url'  => route('failed-payment')
             ]);
         return redirect()->away($checkout->url);
+    }
+    public function updatePaymentMethod(Request $request){
+        return $request->user()->checkout([],[
+            'mode' => Session::MODE_SETUP,
+        ]);
     }
 }
