@@ -22,6 +22,11 @@ const sidebarNavItems: NavItem[] = [
         url: '/settings/appearance',
         icon: null,
     },
+    {
+        title: 'Billing Details',
+        url: '/settings/billing',
+        icon: null,
+    }
 ];
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
