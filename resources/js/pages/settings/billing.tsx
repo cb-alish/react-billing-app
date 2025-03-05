@@ -275,19 +275,23 @@ const InvoicesCard: React.FC<{ invoices: Invoice[] }> = ({ invoices }) => {
 
 const prepareSubscriptionPayload = (subscriptions: any) => {
     const dateOptions:Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" };
-    let nextBillingDescription;
+    let nextBillingDescription, nextBillingValue;
     if(subscriptions?.[0]?.chargebee_status == 'cancelled'){
-        nextBillingDescription = "cancelled at"
+        nextBillingDescription = "cancelled at";
+        nextBillingValue = new Date(subscriptions?.[0]?.ends_at).toLocaleDateString("en-US", dateOptions);
     }
     if(subscriptions?.[0]?.chargebee_status == 'in_trial'){
         nextBillingDescription = "trails ends at"
+        nextBillingValue = new Date(subscriptions?.[0]?.trial_ends_at).toLocaleDateString("en-US", dateOptions);
     }
     if(subscriptions?.[0]?.chargebee_status == 'active'){
-        nextBillingDescription = "next billing cycle"
+        nextBillingDescription = "next billing cycle";
+        nextBillingValue =  new Date(subscriptions?.[0]?.next_billing_at?.replace(" ", "T")).toLocaleDateString("en-US", dateOptions);
+
     }
     const currentSubscription: Subscription = {
         plan: subscriptions?.[0]?.chargebee_price,
-        nextBillingDate: new Date(subscriptions?.[0]?.ends_at).toLocaleDateString("en-US", dateOptions),
+        nextBillingDate: nextBillingValue,
         status: subscriptions?.[0]?.chargebee_status,
         nextBillingDescription: nextBillingDescription,
     };
