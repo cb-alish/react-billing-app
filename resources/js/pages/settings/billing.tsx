@@ -8,12 +8,13 @@ import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import {type BreadcrumbItem, SharedData} from '@/types';
+import Pricing from "@/pages/pricing/pricing";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Billing Details',
         href: '/settings/billing',
-    },
+    }
 ];
 
 // Interfaces
@@ -381,7 +382,6 @@ export default function BillingDetails() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Billing Details" />
-
             <SettingsLayout>
                 <div className="space-y-6">
                     <HeadingSmall
@@ -396,6 +396,7 @@ export default function BillingDetails() {
                     </div>
                 </div>
             </SettingsLayout>
+            <Pricing></Pricing>
         </AppLayout>
     );
 }

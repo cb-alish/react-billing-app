@@ -11,7 +11,6 @@ interface PricingCardsProps {
 export default function PricingCards() {
     const { auth } = usePage<SharedData>().props;
     const subscription = auth.subscription;
-
     const getCurrentSubscriptionPlan = ()=>{
         if(!subscription || subscription.length < 1 || subscription?.[0].chargebee_status === "cancelled"){
             return "none";
@@ -51,6 +50,31 @@ export default function PricingCards() {
         );
     };
 
+    const loginButtonLink = () => {
+        const [isLoading, setIsLoading] = useState(false);
+        const handleClick = (e: React.MouseEvent) => {
+            setIsLoading(true);
+        };
+
+        return (
+            !isLoading ? <a
+                href={ `/login`}
+                className={`mt-auto rounded-lg px-4 py-2 font-medium text-white transition ${
+                    isLoading
+                            ? "bg-blue-400 cursor-wait"
+                            : "bg-blue-600 hover:bg-blue-700"
+                }`}
+                aria-disabled={isLoading}
+                onClick={handleClick}
+            >
+                Login to get started
+            </a> : <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
+            </>
+        );
+    };
+
     const currentPlan = () => {
         return (
             <div
@@ -59,19 +83,20 @@ export default function PricingCards() {
             </div>
         );
     };
-
+    console.log(auth);
     // Free Plan details
     const freePlan = {
         name: "Free",
         description: "Essential features for beginners",
         price: "$0",
-        currentPlan: !subscription || subscription.length === 0 || subscription?.[0].chargebee_status === "cancelled",
+        currentPlan: (!subscription || subscription.length === 0 || subscription?.[0].chargebee_status === "cancelled") && auth.user,
         popular: false,
         features: [
             "5 projects",
             "Basic analytics",
             "24-hour support",
-        ]
+        ],
+        action:  auth.user ? <></> : loginButtonLink()
     };
 
     // Pro Plan details
@@ -87,7 +112,7 @@ export default function PricingCards() {
             "Priority support",
             "Custom integrations"
         ],
-        action: checkoutButtonLink("pro-plan-INR-Monthly")
+        action: auth.user ? checkoutButtonLink("pro-plan-INR-Monthly") : loginButtonLink()
     };
 
     // Premium Plan details
@@ -104,7 +129,7 @@ export default function PricingCards() {
             "Advanced security",
             "API access"
         ],
-        action: checkoutButtonLink("premium-plan-INR-Monthly")
+        action: auth.user ? checkoutButtonLink("premium-plan-INR-Monthly") : loginButtonLink()
     };
 
     return (
@@ -112,6 +137,7 @@ export default function PricingCards() {
             <PlanCard
                 plan={freePlan}
                 currentPlanRenderer={currentPlan}
+                additionalClasses="bg-gray-50 dark:bg-gray-800/50"
             />
             <PlanCard
                 plan={proPlan}
