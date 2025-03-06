@@ -188,7 +188,7 @@ const SubscriptionCard: React.FC<{ subscription: Subscription }> = ({ subscripti
                 <div className="space-y-4">
                     <div>
                         <p className="text-muted-foreground">Plan</p>
-                        <p className="font-semibold">{subscription.plan}</p>
+                        <p className="font-semibold">{subscription.plan.split('-').slice(0, 2).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</p>
                     </div>
                     <div>
                         <p className="text-muted-foreground">{subscription.nextBillingDescription}</p>
@@ -307,7 +307,7 @@ const InvoicesCard: React.FC<{ invoices: Invoice[] }> = ({ invoices }) => {
                                 </p>
                             </div>
                             <div className="text-right">
-                                <p className="font-semibold">${invoice.amount.toFixed(2)}</p>
+                                <p className="font-semibold">Rs {invoice.amount.toFixed(2)}</p>
                                 <StatusBadge status={invoice.status} type="invoice" />
                             </div>
                             {downloadButton(invoice.id)}
@@ -334,7 +334,7 @@ const prepareSubscriptionPayload = (subscriptions: any) => {
         nextBillingValue = new Date(subscriptions?.[0]?.trial_ends_at).toLocaleDateString("en-US", dateOptions);
     }
     if(subscriptions?.[0]?.chargebee_status == 'active'){
-        nextBillingDescription = "next billing cycle";
+        nextBillingDescription = "Next Billing Cycle";
         nextBillingValue =  new Date(subscriptions?.[0]?.next_billing_at?.replace(" ", "T")).toLocaleDateString("en-US", dateOptions);
 
     }

@@ -21,6 +21,7 @@ class CheckoutController extends Controller
     public function updatePaymentMethod(Request $request){
         return $request->user()->checkout([],[
             'mode' => Session::MODE_SETUP,
+            'success_url' => route('billing'),
         ]);
     }
 }

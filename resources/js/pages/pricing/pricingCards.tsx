@@ -88,7 +88,7 @@ export default function PricingCards() {
     const freePlan = {
         name: "Free",
         description: "Essential features for beginners",
-        price: "$0",
+        price: "Rs 0",
         currentPlan: (!subscription || subscription.length === 0 || subscription?.[0].chargebee_status === "cancelled") && auth.user,
         popular: false,
         features: [
@@ -103,7 +103,7 @@ export default function PricingCards() {
     const proPlan = {
         name: "Pro",
         description: "Advanced features for professionals",
-        price: "$29",
+        price: "Rs 300",
         currentPlan: getCurrentSubscriptionPlan() === "pro-plan-INR-Monthly",
         popular: true,
         features: [
@@ -119,7 +119,7 @@ export default function PricingCards() {
     const premiumPlan = {
         name: "Premium",
         description: "Enterprise-grade solutions",
-        price: "$99",
+        price: "Rs 3000",
         currentPlan: getCurrentSubscriptionPlan() === "premium-plan-INR-Monthly",
         popular: false,
         features: [
