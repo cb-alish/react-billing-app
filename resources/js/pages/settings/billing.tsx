@@ -1,5 +1,5 @@
 import {Head, Link, usePage} from '@inertiajs/react';
-import {CreditCard, DollarSign, FileText, Calendar, PlusCircle, Loader2} from 'lucide-react';
+import {CreditCard, DollarSign, FileText, Calendar, PlusCircle, Loader2, Download} from 'lucide-react';
 import React, {useState} from 'react';
 
 import AppLayout from '@/layouts/app-layout';
@@ -38,7 +38,7 @@ interface Invoice {
     status: 'Paid' | 'Pending';
 }
 
-const updatePaymentMethodButton = () => {
+const updatePaymentMethodButton = (Content: string) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleClick = (e: React.MouseEvent) => {
@@ -57,9 +57,57 @@ const updatePaymentMethodButton = () => {
                 className="w-full flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 sm:w-auto"
                 onClick={handleClick}
             >
-                Add Payment Method
+                {Content}
             </a>
         )
+    );
+};
+
+const downloadButton = ( invoice ) => {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleClick = () => {
+        if (isLoading) return;
+
+        setIsLoading(true);
+        fetch(`/user/invoice/${invoice}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = `invoice-${invoice}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            })
+            .catch(error => {
+                console.error('Download failed:', error);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    };
+
+    return (
+        <button
+            className="w-full flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 sm:w-auto"
+            onClick={handleClick}
+            disabled={isLoading}
+        >
+            {isLoading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+                <Download className="w-4 h-4" />
+            )}
+        </button>
     );
 };
 
@@ -174,7 +222,7 @@ const NoPaymentMethodCard: React.FC = () => {
                 </p>
             </CardContent>
             <CardFooter>
-                {updatePaymentMethodButton()}
+                {updatePaymentMethodButton("Add Payment Method")}
             </CardFooter>
         </Card>
     );
@@ -204,7 +252,7 @@ const PaymentMethodCard: React.FC<{ paymentMethod?: PaymentMethod }> = ({ paymen
                         <p className="text-muted-foreground">Card Number</p>
                         <p className="font-semibold">**** **** **** {paymentMethod.lastFourDigits}</p>
                     </div>
-                    {updatePaymentMethodButton()}
+                    {updatePaymentMethodButton("Update Payment Method")}
                 </div>
             </CardContent>
         </Card>
@@ -238,13 +286,12 @@ const InvoicesCard: React.FC<{ invoices: Invoice[] }> = ({ invoices }) => {
     if (invoices.length === 0) {
         return <NoInvoicesCard />;
     }
-
     return (
         <Card className="md:col-span-2">
             <CardHeader>
                 <CardTitle className="flex items-center">
                     <FileText className="mr-2" />
-                    Recent Invoices
+                    Last Invoice
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -262,6 +309,7 @@ const InvoicesCard: React.FC<{ invoices: Invoice[] }> = ({ invoices }) => {
                                 <p className="font-semibold">${invoice.amount.toFixed(2)}</p>
                                 <StatusBadge status={invoice.status} type="invoice" />
                             </div>
+                            {downloadButton(invoice.id)}
                         </div>
                     ))}
                 </div>
@@ -305,31 +353,31 @@ const preparePaymentMethodDetails = (user: any) => {
         lastFourDigits: user?.pm_last_four,
     }
 }
-// Main Billing Details Page Component
+
+const prepareInvoices = (invoices: any) => {
+    const returnInvoices = [];
+
+    invoices.forEach((invoice)=>{
+        const timestamp = invoice.generated_at;
+        const date = new Date(timestamp * 1000); // Convert to milliseconds
+
+        const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = date.toLocaleDateString('en-US', options);
+        const returnInvoice = {
+            id: invoice.id,
+            amount: ((invoice.total) / 100),
+            status: invoice.status,
+            date: formattedDate
+        }
+        returnInvoices.push(returnInvoice);
+    })
+    return returnInvoices;
+}
 export default function BillingDetails() {
     const { auth } = usePage<SharedData>().props;
-    console.log(auth);
     const currentSubscription = prepareSubscriptionPayload(auth.subscription);
     const paymentMethod = preparePaymentMethodDetails(auth.user);
-
-    const recentInvoices: Invoice[] = [
-        // Uncomment to test no invoices scenario
-        // [],
-
-        {
-            id: 'INV-2024-03-01',
-            date: 'March 1, 2025',
-            amount: 29.99,
-            status: 'Paid'
-        },
-        {
-            id: 'INV-2024-02-01',
-            date: 'February 1, 2025',
-            amount: 29.99,
-            status: 'Paid'
-        }
-    ];
-
+    const recentInvoices = prepareInvoices(auth.invoices);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Billing Details" />
