@@ -17,6 +17,11 @@ Route::get('pricing', function () {
     return Inertia::render('pricing/pricing');
 })->name('pricing');
 
+
+Route::get('billing', function () {
+    return Inertia::render('pricing/pricing');
+})->name('billings');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('failed-payment', function () {
         return Inertia::render('failedPayment');
