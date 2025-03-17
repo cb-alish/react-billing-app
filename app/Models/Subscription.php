@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-use \Laravel\CashierChargebee\Subscription as CashierSubscription;
+use Chargebee\Cashier\Subscription as CashierSubscription;
 
 class Subscription extends CashierSubscription
 {

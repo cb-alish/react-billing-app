@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Chargebee\Cashier\Session;
 use Illuminate\Http\Request;
-use Laravel\CashierChargebee\Session;
-
 
 class CheckoutController extends Controller
 {

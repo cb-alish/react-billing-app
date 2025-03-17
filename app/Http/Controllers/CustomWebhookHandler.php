@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use Laravel\CashierChargebee\Listeners\HandleWebhookReceived;
+use Chargebee\Cashier\Listeners\HandleWebhookReceived;
 use ChargeBee\ChargeBee\Models\ItemPrice;
 
 class CustomWebhookHandler extends HandleWebhookReceived

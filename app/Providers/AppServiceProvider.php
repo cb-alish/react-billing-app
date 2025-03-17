@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use \Laravel\CashierChargebee\Cashier;
+use Chargebee\Cashier\Cashier;
 use App\Models\Subscription;
 class AppServiceProvider extends ServiceProvider
 {
