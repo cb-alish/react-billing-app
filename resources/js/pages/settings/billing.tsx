@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import {type BreadcrumbItem, SharedData} from '@/types';
 import Pricing from "@/pages/pricing/pricing";
+import PricingCards from "@/pages/pricing/pricingCards";
+import PricingCard from "@/pages/pricingSection";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -394,9 +396,9 @@ export default function BillingDetails() {
                         <PaymentMethodCard paymentMethod={paymentMethod} />
                         <InvoicesCard invoices={recentInvoices} />
                     </div>
+                    <PricingCards cssClass = {"grid grid-cols-1 md:grid-cols-2 gap-6"}/>
                 </div>
             </SettingsLayout>
-            <Pricing></Pricing>
         </AppLayout>
     );
 }

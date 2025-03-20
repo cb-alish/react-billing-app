@@ -8,7 +8,7 @@ interface PricingCardsProps {
     subscription: any;
 }
 
-export default function PricingCards() {
+export default function PricingCards({cssClass}) {
     const { auth } = usePage<SharedData>().props;
     const subscription = auth.subscription;
     const getCurrentSubscriptionPlan = ()=>{
@@ -131,10 +131,9 @@ export default function PricingCards() {
         ],
         action: auth.user ? checkoutButtonLink("premium-plan-INR-Monthly") : loginButtonLink()
     };
-
     return (
-        <div className="grid gap-6 md:grid-cols-3">
-            <PlanCard
+        <div className={cssClass || "grid gap-6 md:grid-cols-3"}>
+        <PlanCard
                 plan={freePlan}
                 currentPlanRenderer={currentPlan}
                 additionalClasses="bg-gray-50 dark:bg-gray-800/50"
