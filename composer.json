@@ -10,7 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "chargebee/cashier": "dev-dev",
+        "chargebee/cashier": "dev-release/git-leaks-configuration",
         "dompdf/dompdf": "^3.1",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^12.0",
@@ -79,7 +79,10 @@
     "repositories": {
         "cashier-chargebee": {
             "type": "path",
-            "url": "/Users/alishsapkota/work/cashier-chargebee"
+            "url": "/Users/alishsapkota/work/cashier-chargebee",
+            "options": {
+                "symlink": true
+            }
         }
     }
 }

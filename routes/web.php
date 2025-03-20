@@ -18,6 +18,11 @@ Route::get('pricing', function () {
 })->name('pricing');
 
 
+Route::get('pricing-ui', function () {
+    return Inertia::render('pricingSection');
+})->name('pricing-ui');
+
+
 Route::get('billing', function () {
     return Inertia::render('pricing/pricing');
 })->name('billings');
