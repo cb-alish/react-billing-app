@@ -107,19 +107,11 @@ export default function PricingCard() {
                         key={index}
                         onMouseEnter={() => handleMouseEnter(index)}
                         onMouseLeave={handleMouseLeave}
-                        className={`flex flex-col h-full transition-all duration-300 ease-in-out ${
-                            hoveredCard === index
-                                ? "lg:scale-110 z-20 shadow-xl"
-                                : hoveredCard !== null
-                                    ? "lg:scale-95 opacity-80"
-                                    : plan.default
-                                        ? "lg:scale-105 z-10"
-                                        : ""
-                        }`}
+                        className={`flex flex-col h-full transition-all duration-300 ease-in-out`}
                     >
                         <div className={`flex flex-col h-full bg-white dark:bg-zinc-800 rounded-xl border-2 shadow-md overflow-hidden ${
                             hoveredCard === index
-                                ? "border-[#FF3300] border-4"
+                                ? "border-[#FF3300] border-1"
                                 : plan.default && hoveredCard === null
                                     ? "border-[#FF3300]"
                                     : "border-[#012A38] border-opacity-30 dark:border-opacity-50"
@@ -165,7 +157,7 @@ export default function PricingCard() {
                                         href="/settings/subscription"
                                         className={`block w-full px-4 py-3 text-center font-medium rounded-lg transition-all ${
                                             hoveredCard === index
-                                                ? "bg-[#FF3300] text-white hover:bg-opacity-90 transform scale-105"
+                                                ? "bg-[#FF3300] text-white hover:bg-opacity-90"
                                                 : plan.default && hoveredCard === null
                                                     ? "bg-[#FF3300] text-white hover:bg-opacity-90"
                                                     : "bg-[#012A38] text-white hover:bg-opacity-90"
