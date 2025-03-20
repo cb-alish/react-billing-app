@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Chargebee\Cashier\Session;
 use Illuminate\Http\Request;
-use Laravel\CashierChargebee\Session;
-
 
 class CheckoutController extends Controller
 {
@@ -21,6 +20,7 @@ class CheckoutController extends Controller
     public function updatePaymentMethod(Request $request){
         return $request->user()->checkout([],[
             'mode' => Session::MODE_SETUP,
+            'success_url' => route('billing'),
         ]);
     }
 }

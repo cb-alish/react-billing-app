@@ -33,7 +33,7 @@ return [
         'password' => env('CASHIER_WEBHOOK_PASSWORD'),
     ],
 
-    'webhook_listener' => \Laravel\CashierChargebee\Listeners\HandleWebhookReceived::class,
+    'webhook_listener' => App\Http\Controllers\CustomWebhookHandler::class,
 
     /*
     |--------------------------------------------------------------------------
