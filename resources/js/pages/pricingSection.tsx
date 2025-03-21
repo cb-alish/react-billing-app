@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import {useState, useEffect, useRef} from "react";
 import getSymbolFromCurrency from "currency-symbol-map";
+import CommandWithCopyButton from "@/pages/copyClipboardCommand";
 
 export default function PricingCard() {
     const [billing, setBilling] = useState("Monthly");
@@ -81,7 +82,8 @@ export default function PricingCard() {
             </div>
 
             <div className="flex justify-center mb-12">
-                <div className="relative inline-flex items-center justify-center p-1 border-2 rounded-full border-[#FF3300] dark:border-[#FF3300]">
+                <div
+                    className="relative inline-flex items-center justify-center p-1 border-2 rounded-full border-[#FF3300] dark:border-[#FF3300]">
                     <div
                         ref={monthlyRef}
                         onClick={() => {
@@ -132,17 +134,19 @@ export default function PricingCard() {
                             onMouseLeave={() => !loading && handleMouseLeave()}
                             className={`flex flex-col h-full transition-all duration-300 ease-in-out ${loading && !isLoading ? "opacity-50" : ""}`}
                         >
-                            <div className={`flex flex-col h-full bg-white dark:bg-zinc-800 rounded-xl border-2 shadow-md overflow-hidden ${
-                                hoveredCard === index
-                                    ? "border-[#FF3300] border-1"
-                                    : plan.default && hoveredCard === null
-                                        ? "border-[#FF3300]"
-                                        : "border-[#012A38] border-opacity-30 dark:border-opacity-50"
-                            }`}>
+                            <div
+                                className={`flex flex-col h-full bg-white dark:bg-zinc-800 rounded-xl border-2 shadow-md overflow-hidden ${
+                                    hoveredCard === index
+                                        ? "border-[#FF3300] border-1"
+                                        : plan.default && hoveredCard === null
+                                            ? "border-[#FF3300]"
+                                            : "border-[#012A38] border-opacity-30 dark:border-opacity-50"
+                                }`}>
                                 <div className="px-6 pt-6">
-                                    <span className={`inline-block px-4 py-1 text-sm font-medium text-white rounded-full ${
-                                        hoveredCard === index ? "bg-[#FF3300]" : "bg-[#012A38]"
-                                    }`}>
+                                    <span
+                                        className={`inline-block px-4 py-1 text-sm font-medium text-white rounded-full ${
+                                            hoveredCard === index ? "bg-[#FF3300]" : "bg-[#012A38]"
+                                        }`}>
                                         {plan.name}
                                     </span>
                                 </div>
@@ -168,8 +172,11 @@ export default function PricingCard() {
                                             <li key={i} className="flex items-start">
                                                 <svg className={`w-5 h-5 mt-0.5 mr-2 flex-shrink-0 ${
                                                     hoveredCard === index ? "text-[#FF3300]" : "text-[#FF3300]"
-                                                }`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                }`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                     fill="currentColor">
+                                                    <path fillRule="evenodd"
+                                                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                          clipRule="evenodd"/>
                                                 </svg>
                                                 <span className="text-zinc-700 dark:text-zinc-300">{feature}</span>
                                             </li>
@@ -189,9 +196,13 @@ export default function PricingCard() {
                                         >
                                             {isLoading ? (
                                                 <span className="flex items-center justify-center">
-                                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                                         xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                         viewBox="0 0 24 24">
+                                                        <circle className="opacity-25" cx="12" cy="12" r="10"
+                                                                stroke="currentColor" strokeWidth="4"></circle>
+                                                        <path className="opacity-75" fill="currentColor"
+                                                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                                     </svg>
                                                     Processing...
                                                 </span>
@@ -210,11 +221,9 @@ export default function PricingCard() {
                     );
                 })}
             </div>
-
-            <p className="mt-8 text-center text-zinc-500 dark:text-zinc-400">
-                Plans are auto configured if you have webhook enabled, if you want to fetch plan you can run php a something something command and see
-                <code>/a/txt</code>. Also you can manually add plan using admin using admin. Default password for admin is d5faultPassw0rd
-            </p>
+            <CommandWithCopyButton
+                command="php artisan chargebee:fetch-plan"
+                note="Use the following command to import plans from chargebee dashboard, ensure env is populated." text={"red"} />
         </section>
     );
 }
