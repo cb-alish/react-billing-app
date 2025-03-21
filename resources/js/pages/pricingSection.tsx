@@ -1,35 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 
-const plans = [
-    {
-        name: "Basic",
-        monthly_price: "10",
-        yearly_price: "100",
-        features: ["Feature A", "Feature B", "Feature C"],
-        default: false,
-    },
-    {
-        name: "Pro",
-        monthly_price: "20",
-        yearly_price: "200",
-        features: ["Feature A", "Feature B", "Feature C", "Feature D"],
-        default: false,
-    },
-    {
-        name: "Enterprise",
-        monthly_price: "50",
-        yearly_price: "500",
-        features: ["Feature A", "Feature B", "Feature C", "Feature D", "Feature E"],
-        default: false,
-    },
-];
-
 export default function PricingCard() {
     const [billing, setBilling] = useState("Monthly");
     const [hoveredCard, setHoveredCard] = useState(null);
+    const [plans, setPlans] = useState([]);
     const markerRef = useRef(null);
     const monthlyRef = useRef(null);
     const yearlyRef = useRef(null);
+
+    useEffect(() => {
+        fetch("/plans/list") // Adjust URL based on your backend
+            .then((response) => response.json())
+            .then((data) => setPlans(data))
+            .catch((error) => console.error("Error fetching plans:", error));
+    }, []);
 
     useEffect(() => {
         if (monthlyRef.current && markerRef.current) {
@@ -154,7 +138,7 @@ export default function PricingCard() {
                                 </ul>
                                 <div className="mt-6">
                                     <a
-                                        href="/settings/subscription"
+                                        href={`/checkout/${billing=="Monthly" ? plan.monthly_chargebee_id : plan.yearly_chargebee_id}`}
                                         className={`block w-full px-4 py-3 text-center font-medium rounded-lg transition-all ${
                                             hoveredCard === index
                                                 ? "bg-[#FF3300] text-white hover:bg-opacity-90"
