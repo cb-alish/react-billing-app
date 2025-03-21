@@ -223,7 +223,7 @@ export default function PricingCard() {
             </div>
             <CommandWithCopyButton
                 command="php artisan chargebee:fetch-plan"
-                note="Use the following command to import plans from chargebee dashboard, ensure env is populated." text={"red"} />
+                note="Use the following command to import plans from chargebee dashboard, ensure env is populated."/>
         </section>
     );
 }

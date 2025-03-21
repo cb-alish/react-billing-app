@@ -11,7 +11,7 @@ const CommandWithCopyButton = ({ command, note }) => {
     };
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="mt-4 flex flex-col items-center">
             <div className="flex items-center space-x-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 p-3 text-sm">
                 <div className="flex items-center">
                     <span className="text-zinc-400 mr-2">$</span>

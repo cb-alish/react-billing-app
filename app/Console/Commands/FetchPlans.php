@@ -27,7 +27,7 @@ class FetchPlans extends Command
 
         try {
             $items = Item::all([
-                "type" => "plan"
+                "type[is]" => "plan"
             ]);
             foreach ($items as $itemEntry) {
                 $item = $itemEntry->item();
