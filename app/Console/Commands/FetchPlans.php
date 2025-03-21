@@ -31,7 +31,9 @@ class FetchPlans extends Command
 
             foreach ($response as $entry) {
                 $itemPrice = $entry->itemPrice();
-
+                if(!$itemPrice?->price || $itemPrice->price === 0){
+                    continue;
+                }
                 // Insert into database
                 Plan::updateOrCreate(
                     ['chargebee_id' => $itemPrice->id], // Unique identifier

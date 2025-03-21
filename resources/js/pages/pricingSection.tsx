@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import getSymbolFromCurrency from "currency-symbol-map";
 
 export default function PricingCard() {
     const [billing, setBilling] = useState("Monthly");
@@ -112,7 +113,7 @@ export default function PricingCard() {
                                     <span className={`text-4xl font-bold ${
                                         hoveredCard === index ? "text-[#FF3300]" : "text-[#012A38] dark:text-zinc-50"
                                     }`}>
-                                        ${billing === "Monthly" ? plan.monthly_price : plan.yearly_price}
+                                        {getSymbolFromCurrency(plan?.currency)}{billing === "Monthly" ? plan.monthly_price : plan.yearly_price}
                                     </span>
                                     <span className="ml-1 text-lg font-medium text-zinc-500 dark:text-zinc-400">
                                         /{billing === "Monthly" ? "mo" : "yr"}
