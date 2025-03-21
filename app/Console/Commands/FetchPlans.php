@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use ChargeBee\ChargeBee\Models\ItemPrice;
+use ChargeBee\ChargeBee\Models\Item;
 use ChargeBee\ChargeBee\Environment;
 use Illuminate\Console\Command;
 use App\Models\Plan;
@@ -25,30 +26,37 @@ class FetchPlans extends Command
         Environment::configure($site, $apiKey);
 
         try {
-            $response = ItemPrice::all([
-                "item_type[is]" => "plan",
+            $items = Item::all([
+                "type" => "plan"
             ]);
+            foreach ($items as $itemEntry) {
+                $item = $itemEntry->item();
+                $response = ItemPrice::all([
+                    "item_type[is]" => "plan",
+                    "item_id[is]" => $item->id,
+                    "limit" => 30
+                ]);
 
-            foreach ($response as $entry) {
-                $itemPrice = $entry->itemPrice();
-                if(!$itemPrice?->price || $itemPrice->price === 0){
-                    continue;
+                foreach ($response as $entry) {
+                    $itemPrice = $entry->itemPrice();
+                    if (!$itemPrice?->price || $itemPrice->price === 0) {
+                        continue;
+                    }
+                    Plan::updateOrCreate(
+                        ['chargebee_id' => $itemPrice->id],
+                        [
+                            "display_name" => $item->externalName ?? $item->name,
+                            "price" => $itemPrice->price,
+                            "chargebee_product" => $itemPrice->itemId,
+                            "frequency" => $itemPrice->periodUnit,
+                            "currency" => $itemPrice->currencyCode,
+                            "quantity" => 1
+                        ]
+                    );
                 }
-                // Insert into database
-                Plan::updateOrCreate(
-                    ['chargebee_id' => $itemPrice->id], // Unique identifier
-                    [
-                        "display_name" => $itemPrice->name,
-                        "price" => $itemPrice->price,
-                        "chargebee_product" => $itemPrice->itemId,
-                        "frequency" => $itemPrice->periodUnit,
-                        "currency" => $itemPrice->currencyCode,
-                        "quantity" => 1
-                    ]
-                );
-            }
 
-            $this->info("Plan details successfully stored in the database.");
+                $this->info("Plans " . $item->id . " details successfully stored in the database.");
+            }
 
         } catch (\Exception $e) {
             $this->error("Error fetching plans: " . $e->getMessage());
