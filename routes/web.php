@@ -35,7 +35,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('failedPayment');
     })->name('failed-payment');
 });
-
+Route::get('subscription/success', function () {
+    return Inertia::render('successfulSubscription');
+})->name('successful-subscription');
 Route::middleware([])->group(function () {
     Route::get('something-went-wrong', function () {
         return Inertia::render('errorPage', [
