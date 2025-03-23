@@ -1,6 +1,6 @@
 <?php
 
-use Laravel\CashierChargebee\Invoices\DompdfInvoiceRenderer;
+use Chargebee\Cashier\Invoices\DompdfInvoiceRenderer;
 
 return [
 
