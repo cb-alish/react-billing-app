@@ -26,6 +26,11 @@ const sidebarNavItems: NavItem[] = [
         title: 'Billing Details',
         url: '/settings/billing',
         icon: null,
+    },
+    {
+        title: 'Invoices',
+        url: '/settings/invoices',
+        icon: null,
     }
 ];
 
