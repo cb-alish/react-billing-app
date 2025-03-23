@@ -15,7 +15,7 @@ export default function PricingCard() {
     useEffect(() => {
         fetch("/plans/list") // Adjust URL based on your backend
             .then((response) => response.json())
-            .then((data) => setPlans(data))
+            .then((data) => {setPlans(data)})
             .catch((error) => console.error("Error fetching plans:", error));
     }, []);
 
@@ -43,25 +43,14 @@ export default function PricingCard() {
     const handleMouseLeave = () => {
         setHoveredCard(null);
     };
-
-    // Handle checkout click
     const handleCheckoutClick = (e, planId) => {
         if (loading) {
             e.preventDefault();
             return;
         }
-
         setLoading(true);
         setLoadingPlanId(planId);
-
-        // You could add a timeout here to simulate loading if needed
-        // setTimeout(() => {
-        //    setLoading(false);
-        //    setLoadingPlanId(null);
-        // }, 2000);
     };
-
-    // Filter plans based on current billing cycle
     const filteredPlans = plans.filter(plan => {
         if (billing === "Monthly" && plan.monthly_price !== undefined) {
             return true;
@@ -122,7 +111,8 @@ export default function PricingCard() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Card container - changed from grid to flex */}
+            <div className="flex flex-wrap justify-center">
                 {filteredPlans.map((plan, index) => {
                     const planId = billing === "Monthly" ? plan.monthly_chargebee_id : plan.yearly_chargebee_id;
                     const isLoading = loading && loadingPlanId === planId;
@@ -132,7 +122,7 @@ export default function PricingCard() {
                             key={index}
                             onMouseEnter={() => !loading && handleMouseEnter(index)}
                             onMouseLeave={() => !loading && handleMouseLeave()}
-                            className={`flex flex-col h-full transition-all duration-300 ease-in-out ${loading && !isLoading ? "opacity-50" : ""}`}
+                            className={`flex-1 min-w-[300px] max-w-[400px] px-3 mb-6 transition-all duration-300 ease-in-out ${loading && !isLoading ? "opacity-50" : ""}`}
                         >
                             <div
                                 className={`flex flex-col h-full bg-white dark:bg-zinc-800 rounded-xl border-2 shadow-md overflow-hidden ${

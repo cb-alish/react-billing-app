@@ -22,6 +22,9 @@ Route::get('pricing-ui', function () {
     return Inertia::render('pricingSection');
 })->name('pricing-ui');
 
+Route::get('blank-slate', function () {
+    return Inertia::render('blankSlate');
+})->name('blank-slate');
 
 Route::get('billing', function () {
     return Inertia::render('pricing/pricing');

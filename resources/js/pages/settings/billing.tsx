@@ -396,9 +396,10 @@ export default function BillingDetails() {
                         <PaymentMethodCard paymentMethod={paymentMethod} />
                         <InvoicesCard invoices={recentInvoices} />
                     </div>
-                    <PricingCards cssClass = {"grid grid-cols-1 md:grid-cols-2 gap-6"}/>
+                    <PricingCard> </PricingCard>
                 </div>
             </SettingsLayout>
+
         </AppLayout>
     );
 }
