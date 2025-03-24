@@ -23,6 +23,10 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('settings/billing');
     })->name('billing');
 
+    Route::get('settings/subscriptions', function() {
+        return Inertia::render('settings/subscriptions');
+    })->name('billing');
+
 
     Route::get('settings/invoices', function () {
         return Inertia::render('settings/invoices');

@@ -8,8 +8,6 @@ import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import {type BreadcrumbItem, SharedData} from '@/types';
-import Pricing from "@/pages/pricing/pricing";
-import PricingCards from "@/pages/pricing/pricingCards";
 import PricingCard from "@/pages/pricingSection";
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -380,7 +378,6 @@ export default function BillingDetails() {
     const { auth } = usePage<SharedData>().props;
     const currentSubscription = prepareSubscriptionPayload(auth.subscription);
     const paymentMethod = preparePaymentMethodDetails(auth.user);
-    const recentInvoices = prepareInvoices(auth.invoices);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Billing Details" />

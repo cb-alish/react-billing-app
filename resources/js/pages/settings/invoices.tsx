@@ -27,7 +27,7 @@ interface Invoice {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Billing Details',
+        title: 'Invoices',
         href: '/settings/invoices',
     }
 ];
