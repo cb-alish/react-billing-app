@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 import confetti from 'canvas-confetti';
-import CommandWithCopyButton from "@/pages/copyClipboardCommand";
+import CommandWithCopyButton from "@/pages/Utils/copyClipboardCommand";
 import AppLayout from "@/layouts/app-layout";
 import {Head} from "@inertiajs/react";
 
@@ -37,7 +37,7 @@ const SubscriptionWelcome = () => {
                                 account they will be redirected to this page after a successful transaction.</p>
                         </div>
                         <CommandWithCopyButton
-                            command={"/resources/js/pages/successfulSubscription.tsx"}
+                            command={"/resources/js/pages/banners/successfulSubscription.tsx"}
                             note={"You can modify this view from here."}
                         >
                         </CommandWithCopyButton>

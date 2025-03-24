@@ -2,11 +2,12 @@ import React, {useState} from "react";
 import {BreadcrumbItem, SharedData} from "@/types";
 import AppLayout from "@/layouts/app-layout";
 import SettingsLayout from "@/layouts/settings/layout";
-import PricingCard from "@/pages/pricingSection";
+import Pricing from "@/pages/pricing/pricing";
 import AppLogoIcon from "@/components/app-logo-icon";
 import ChargebeeIcon from "@/components/chargebee-icon";
 import {Head, usePage} from "@inertiajs/react";
 import {Loader2} from "lucide-react";
+import ChargebeeBanner from "@/pages/banners/chargebeeBanner";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -105,16 +106,8 @@ const SubscriptionSettings: React.FC = () => {
                                 </div>
                             </div>
 
-                            <PricingCard/>
-
-                            <div
-                                className="flex items-center justify-center mt-6 p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
-                                <p className="flex items-center text-zinc-600 dark:text-zinc-300">
-                                    <span className="mr-1">Billing is securely managed via</span>
-                                    <ChargebeeIcon className="mx-2 h-5"/>
-                                    <strong>Chargebee Billing Platform</strong>.
-                                </p>
-                            </div>
+                            <Pricing/>
+                            <ChargebeeBanner/>
                         </div>
                     ) : (
                         <div className="max-w-4xl mx-auto">

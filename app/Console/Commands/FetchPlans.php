@@ -10,7 +10,7 @@ use App\Models\Plan;
 
 class FetchPlans extends Command
 {
-    protected $signature = 'chargebee:fetch-plan';
+    protected $signature = 'chargebee:fetch-plans';
     protected $description = 'Fetch plans from ChargeBee and store them in the database';
 
     public function handle()
