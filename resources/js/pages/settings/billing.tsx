@@ -394,11 +394,8 @@ export default function BillingDetails() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <SubscriptionCard subscription={currentSubscription} />
                         <PaymentMethodCard paymentMethod={paymentMethod} />
-                        <InvoicesCard invoices={recentInvoices} />
                     </div>
                     <PricingCard> </PricingCard>
-
-                    {/*<PricingCards cssClass = {"grid grid-cols-1 md:grid-cols-2 gap-6"}/>*/}
                 </div>
             </SettingsLayout>
 

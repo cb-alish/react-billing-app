@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { BreadcrumbItem } from "@/types";
+import React, {useEffect, useState} from "react";
+import {BreadcrumbItem} from "@/types";
 import AppLayout from "@/layouts/app-layout";
-import { Head } from "@inertiajs/react";
+import {Head} from "@inertiajs/react";
 import SettingsLayout from "@/layouts/settings/layout";
 
 interface LineItem {
@@ -36,6 +36,7 @@ const Invoices: React.FC = () => {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [downloadingInvoiceId, setDownloadingInvoiceId] = useState<string | null>(null);
+    const [hoveredInvoiceId, setHoveredInvoiceId] = useState<string | null>(null);
 
     useEffect(() => {
         // Fetch invoices with loading state
@@ -88,9 +89,9 @@ const Invoices: React.FC = () => {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Invoices" />
+            <Head title="Invoices"/>
             <SettingsLayout>
-                <div>
+                <div className="p-6">
                     <div className="text-center max-w-3xl mx-auto mb-12">
                         <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50 mb-3">Invoices</h1>
                         <p className="text-lg text-zinc-600 dark:text-zinc-300">
@@ -112,11 +113,26 @@ const Invoices: React.FC = () => {
                                 <div
                                     key={invoice.id}
                                     className="flex-1 min-w-[300px] max-w-[700px] px-3 mb-6 transition-all duration-300 ease-in-out"
+                                    onMouseEnter={() => setHoveredInvoiceId(invoice.id)}
+                                    onMouseLeave={() => setHoveredInvoiceId(null)}
                                 >
-                                    <div className="bg-white dark:bg-zinc-800 shadow-lg rounded-xl border-2 border-[#012A38] border-opacity-30 dark:border-opacity-50 overflow-hidden flex flex-col h-full">
-                                        <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
+                                    <div
+                                        className={`bg-white dark:bg-zinc-800 shadow-lg rounded-xl border-2 overflow-hidden flex flex-col h-full transition-all duration-300 ${
+                                            hoveredInvoiceId === invoice.id
+                                                ? "border-[#FF3300] transform scale-[1.01]"
+                                                : "border-[#012A38] border-opacity-30 dark:border-opacity-50"
+                                        }`}
+                                    >
+                                        <div
+                                            className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
                                             <div>
-                                                <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Invoice #{invoice.id}</h2>
+                                                <h2 className={`text-lg font-semibold ${
+                                                    hoveredInvoiceId === invoice.id
+                                                        ? "text-[#FF3300] dark:text-[#FF3300]"
+                                                        : "text-zinc-900 dark:text-zinc-50"
+                                                } transition-colors duration-300`}>
+                                                    Invoice #{invoice.id}
+                                                </h2>
                                                 <p className={`text-sm font-medium ${
                                                     invoice.status === "paid"
                                                         ? "text-green-600 dark:text-green-400"
@@ -140,13 +156,15 @@ const Invoices: React.FC = () => {
                                                     </p>
                                                 </div>
                                                 <div className="bg-gray-50 dark:bg-zinc-700 p-4 rounded-lg">
-                                                    <p className="text-sm text-gray-500 dark:text-gray-400">Amount Paid</p>
+                                                    <p className="text-sm text-gray-500 dark:text-gray-400">Amount
+                                                        Paid</p>
                                                     <p className="text-lg font-bold text-green-600 dark:text-green-400">
                                                         {formatCurrency(invoice.amount_paid, invoice.currency_code)}
                                                     </p>
                                                 </div>
                                                 <div className="bg-gray-50 dark:bg-zinc-700 p-4 rounded-lg">
-                                                    <p className="text-sm text-gray-500 dark:text-gray-400">Amount Due</p>
+                                                    <p className="text-sm text-gray-500 dark:text-gray-400">Amount
+                                                        Due</p>
                                                     <p className={`text-lg font-bold ${
                                                         invoice.amount_due > 0
                                                             ? "text-red-600 dark:text-red-400"
@@ -163,7 +181,9 @@ const Invoices: React.FC = () => {
                                                     <tr className="bg-gray-50 dark:bg-zinc-700">
                                                         <th className="border border-gray-200 dark:border-gray-700 p-2 text-left text-zinc-900 dark:text-zinc-50">Item</th>
                                                         <th className="border border-gray-200 dark:border-gray-700 p-2 text-center text-zinc-900 dark:text-zinc-50">Quantity</th>
-                                                        <th className="border border-gray-200 dark:border-gray-700 p-2 text-right text-zinc-900 dark:text-zinc-50">Unit Price</th>
+                                                        <th className="border border-gray-200 dark:border-gray-700 p-2 text-right text-zinc-900 dark:text-zinc-50">Unit
+                                                            Price
+                                                        </th>
                                                         <th className="border border-gray-200 dark:border-gray-700 p-2 text-right text-zinc-900 dark:text-zinc-50">Total</th>
                                                     </tr>
                                                     </thead>
@@ -185,7 +205,11 @@ const Invoices: React.FC = () => {
                                             <button
                                                 onClick={() => handleDownloadInvoice(invoice.id)}
                                                 disabled={downloadingInvoiceId === invoice.id}
-                                                className="w-full px-4 py-3 text-center font-medium rounded-lg transition-all bg-[#012A38] text-white hover:bg-opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                className={`w-full px-4 py-3 text-center font-medium rounded-lg transition-all text-white ${
+                                                    hoveredInvoiceId === invoice.id
+                                                        ? "bg-[#FF3300] hover:bg-opacity-90"
+                                                        : "bg-[#012A38] hover:bg-opacity-90"
+                                                } disabled:opacity-50 disabled:cursor-not-allowed`}
                                             >
                                                 {downloadingInvoiceId === invoice.id ? (
                                                     <span className="flex items-center justify-center">
@@ -203,13 +227,19 @@ const Invoices: React.FC = () => {
                                                     <span className="flex items-center justify-center">
                                                         <svg className="mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg"
                                                              viewBox="0 0 20 20" fill="currentColor">
-                                                            <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                                                            <path fillRule="evenodd"
+                                                                  d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                                                                  clipRule="evenodd"/>
                                                         </svg>
                                                         Download Invoice
                                                     </span>
                                                 )}
                                             </button>
                                         </div>
+
+                                        {hoveredInvoiceId === invoice.id && (
+                                            <div className="absolute top-0 right-0 w-full bg-[#FF3300]"></div>
+                                        )}
                                     </div>
                                 </div>
                             ))}
