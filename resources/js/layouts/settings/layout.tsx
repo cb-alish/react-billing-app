@@ -78,7 +78,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                         ))}
                     </nav>
                 </aside>
-                <div className="flex">
+                <div className="flex-1">
                     <section className="w-full space-y-12">{children}</section>
                 </div>
             </div>

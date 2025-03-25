@@ -108,7 +108,7 @@ const Invoices: React.FC = () => {
                             <p className="text-zinc-600 dark:text-zinc-300">No invoices found.</p>
                         </div>
                     ) : (
-                        <div className="flex flex-wrap justify-center">
+                        <div className="mx-33 flex-1">
                             {invoices.map((invoice) => (
                                 <div
                                     key={invoice.id}
