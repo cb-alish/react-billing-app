@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Plan;
 use Carbon\Carbon;
 use Chargebee\Cashier\Listeners\HandleWebhookReceived;
 use ChargeBee\ChargeBee\Models\ItemPrice;
+use Illuminate\Support\Facades\Log;
+use PHPUnit\Exception;
+
 
 class CustomWebhookHandler extends HandleWebhookReceived
 {
@@ -48,4 +52,69 @@ class CustomWebhookHandler extends HandleWebhookReceived
 
         return $subscription;
     }
+
+    protected function updateOrCreateItemPrice(array $itemPrice): void
+    {
+        if (empty($itemPrice['price']) || $itemPrice['price'] === 0) {
+            return;
+        }
+        if ($itemPrice['item_type'] !== 'plan') {
+            return;
+        }
+        if (!in_array($itemPrice['period_unit'], ['month', 'year'], true)) {
+            return;
+        }
+
+        Plan::updateOrCreate(
+            ['chargebee_id' => $itemPrice['id']], // Fixed missing closing bracket
+            [
+                "display_name" => $itemPrice['external_name'] ?? $itemPrice['name'],
+                "price" => $itemPrice['price'],
+                "chargebee_product" => $itemPrice['item_id'],
+                "frequency" => $itemPrice['period_unit'],
+                "currency" => $itemPrice['currency_code'],
+                "quantity" => 1
+            ]
+        );
+    }
+
+    /**
+     * handles item_price_created event
+     * @return void
+     */
+    protected function handleItemPriceCreated(array $payload): void
+    {
+        try {
+            $itemPrice = $payload['content']['item_price'];
+            $this->updateOrCreateItemPrice($itemPrice);
+            Log::info('ItemPrice created successfully.', [
+                'item_price_id' => $itemPrice['id'],
+            ]);
+        } catch (Exception $ex) {
+            Log::info('Exception while handling item_price_created webhook from chargebee', [
+                'message' => $ex->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * handles item_price_updated event
+     * @return void
+     */
+    protected function handleItemPriceUpdated(array $payload): void
+    {
+        try {
+            $itemPrice = $payload['content']['item_price'];
+            $this->updateOrCreateItemPrice($itemPrice);
+            Log::info('ItemPrice updated successfully.', [
+                'item_price_id' => $itemPrice->id,
+            ]);
+        } catch (Exception $ex) {
+            Log::info('Exception while handling item_price_updated webhook from ChargeBee', [
+                'message' => $ex->getMessage()
+            ]);
+        }
+    }
+
+
 }
