@@ -5,12 +5,12 @@ import ChargebeeBanner from "@/pages/banners/chargebeeBanner";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Pricing',
-        href: '/pricing',
+        title: 'Billing',
+        href: '/billing',
     },
 ];
 
-export default function PricingPage() {
+export default function BillingPage() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Pricing/>

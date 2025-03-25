@@ -119,7 +119,7 @@ const Invoices: React.FC = () => {
                                     <div
                                         className={`bg-white dark:bg-zinc-800 shadow-lg rounded-xl border-2 overflow-hidden flex flex-col h-full transition-all duration-300 ${
                                             hoveredInvoiceId === invoice.id
-                                                ? "border-[#FF3300] transform scale-[1.01]"
+                                                ? "border-[#FF3300]"
                                                 : "border-[#012A38] border-opacity-30 dark:border-opacity-50"
                                         }`}
                                     >

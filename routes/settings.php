@@ -18,7 +18,7 @@ Route::middleware('auth')->group(function () {
     })->name('appearance');
     Route::get('settings/subscriptions', function() {
         return Inertia::render('settings/subscriptions');
-    })->name('billing');
+    })->name('subscription-settings');
     Route::get('settings/invoices', function () {
         return Inertia::render('settings/invoices');
     })->name('invoice-page');

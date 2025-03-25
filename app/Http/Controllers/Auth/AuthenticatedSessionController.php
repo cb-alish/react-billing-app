@@ -33,7 +33,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended($request?->user?->subscribed('default')? route('dashboard', absolute: false) :  route('pricing', absolute: false));
+        return redirect()->intended(
+            $request->user()?->subscribed('default')
+                ? route('dashboard', absolute: false)
+                : route('home', absolute: false)
+        );
     }
 
     /**

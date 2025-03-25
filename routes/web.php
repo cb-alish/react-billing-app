@@ -13,13 +13,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
-Route::get('pricing', function () {
-    return Inertia::render('pricing/pricingPage');
-})->name('pricing');
+Route::get('billing', function () {
+    if (auth()->user()?->subscribed('default')) {
+        return redirect()->route('subscription-settings');
+    }
+    return Inertia::render('pricing/billingPage');
+})->name('billing');
 
-Route::get('pricing-ui', function () {
+
+Route::get('pricing', function () {
     return Inertia::render('pricing/pricing');
-})->name('pricing-unauthorized');
+})->name('pricing');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('failed-payment', function () {
