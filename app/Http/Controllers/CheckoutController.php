@@ -12,7 +12,7 @@ class CheckoutController extends Controller
             ->user()
             ->newSubscription('default', $plan)
             ->checkout([
-                'success_url' => route('dashboard'),
+                'success_url' => route('successful-subscription'),
                 'cancel_url'  => route('failed-payment')
             ]);
         return redirect()->away($checkout->url);

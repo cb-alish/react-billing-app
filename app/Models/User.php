@@ -47,4 +47,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public  function subsriptionWithProductDetails() {
+       $subscriptionDetails = $this->subscription('default');
+       if(!$subscriptionDetails){
+           return null;
+       }
+        foreach ($subscriptionDetails->items as $item) {
+            $chargebeeProductId = $item->chargebee_product;
+            $plan = \App\Models\Plan::where('chargebee_product', $chargebeeProductId)->first();
+            $item->plan_name = $plan->display_name ?? null;
+        }
+       $subscriptionDetails->currency = $plan->currency ?? null;
+       return $subscriptionDetails;
+    }
 }
