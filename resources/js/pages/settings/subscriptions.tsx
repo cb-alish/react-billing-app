@@ -160,7 +160,7 @@ const SubscriptionSettings: React.FC = () => {
                                         <div className="bg-gray-50 dark:bg-zinc-700 p-4 rounded-lg">
                                             <p className="text-sm text-gray-500 dark:text-gray-400">Billing Cycle</p>
                                             <p className="text-sm text-zinc-900 dark:text-zinc-50">
-                                                {auth.subscription.chargebee_price?.includes('Monthly') ? 'Monthly' : 'Yearly'}
+                                                {auth.subscription.chargebee_price?.match(/Monthly/i) ? 'Monthly' : 'Yearly'}
                                             </p>
                                         </div>
                                         <div className="bg-gray-50 dark:bg-zinc-700 p-4 rounded-lg">
